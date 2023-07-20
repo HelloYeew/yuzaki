@@ -1,0 +1,11 @@
+﻿{
+  "solution": {
+    "path": "Yuzaki.sln",
+    "projects": [
+      "Yuzaki.Desktop\\Yuzaki.Desktop.csproj",
+      "Yuzaki.Game\\Yuzaki.Game.csproj",
+      "Yuzaki.Game.Tests\\Yuzaki.Game.Tests.csproj",
+      "Yuzaki.Resources\\Yuzaki.Resources.csproj"
+    ]
+  }
+}
