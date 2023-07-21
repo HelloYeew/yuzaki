@@ -1,3 +1,4 @@
+using osu.Framework.Allocation;
 using osu.Framework.Testing;
 
 namespace Yuzaki.Game.Tests.Visual
@@ -5,6 +6,16 @@ namespace Yuzaki.Game.Tests.Visual
     public partial class YuzakiTestScene : TestScene
     {
         protected override ITestSceneTestRunner CreateRunner() => new YuzakiTestSceneTestRunner();
+
+        public new DependencyContainer Dependencies { get; private set; }
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
+        {
+            IReadOnlyDependencyContainer baseDependencies = base.CreateChildDependencies(parent);
+            Dependencies = new DependencyContainer(baseDependencies);
+
+            return Dependencies;
+        }
 
         private partial class YuzakiTestSceneTestRunner : YuzakiGameBase, ITestSceneTestRunner
         {

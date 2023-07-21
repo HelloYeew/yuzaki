@@ -3,15 +3,16 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using osuTK;
+using Yuzaki.Game.Store;
 using Yuzaki.Resources;
 
 namespace Yuzaki.Game
 {
     public partial class YuzakiGameBase : osu.Framework.Game
     {
-        // Anything in this class is shared between the test browser and the game implementation.
-        // It allows for caching global dependencies that should be accessible to tests, or changing
-        // the screen scaling for all components including the test browser and framework overlays.
+        private YuzakiTextureStore textureStore;
+
+        private DependencyContainer dependencies;
 
         protected override Container<Drawable> Content { get; }
 
@@ -70,6 +71,11 @@ namespace Yuzaki.Game
             AddFont(Resources, @"Fonts/Noto/Noto-Hangul");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Basic");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Compatibility");
+
+            dependencies.Cache(textureStore = new YuzakiTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
+            dependencies.CacheAs(this);
         }
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) => dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
     }
 }
