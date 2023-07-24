@@ -20,7 +20,7 @@ namespace Yuzaki.Game.Graphics.Components
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
                     RelativeSizeAxes = Axes.X,
-                    Width = 1,
+                    Width = 0.98f,
                     Height = 100,
                     Masking = true,
                     CornerRadius = 10,
