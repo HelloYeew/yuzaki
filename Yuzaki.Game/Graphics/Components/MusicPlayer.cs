@@ -24,7 +24,7 @@ namespace Yuzaki.Game.Graphics.Components
                     Height = 100,
                     Masking = true,
                     CornerRadius = 10,
-                    Margin = new MarginPadding(10),
+                    Margin = new MarginPadding(YuzakiStylingEnum.SCREEN_PADDING),
                     Children = new Drawable[]
                     {
                         new Box
@@ -55,7 +55,7 @@ namespace Yuzaki.Game.Graphics.Components
                                         Origin = Anchor.Centre,
                                         Size = new(80),
                                         Masking = true,
-                                        CornerRadius = 10,
+                                        CornerRadius = YuzakiStylingEnum.CORNER_RADIUS,
                                         Child = new Sprite()
                                         {
                                             Anchor = Anchor.Centre,

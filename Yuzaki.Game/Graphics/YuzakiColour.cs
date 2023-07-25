@@ -22,5 +22,9 @@ namespace Yuzaki.Game.Graphics
         public static readonly Colour4 MusicPlayerTimeTextColour = Colour4.FromHex("FFFFFF");
         public static readonly Colour4 MusicPlayerVolumeSliderBackgroundColour = Colour4.FromHex("E9DCEB");
         public static readonly Colour4 MusicPlayerVolumeSliderForegroundColour = Colour4.FromHex("B493A1");
+
+        public static readonly Colour4 MusicListBackgroundColour = Colour4.FromHex("2C1F3A");
+
+        public static readonly Colour4 PlaylistListBackgroundColour = Colour4.FromHex("2C1F3A");
     }
 }
