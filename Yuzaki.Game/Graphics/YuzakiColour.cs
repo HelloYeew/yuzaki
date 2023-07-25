@@ -13,6 +13,8 @@ namespace Yuzaki.Game.Graphics
         public static readonly Colour4 CircleButtonIconColour = Colour4.FromHex("321743");
         public static readonly Colour4 CircleButtonBackgroundColour = Colour4.FromHex("B493A1");
 
+        public static readonly Colour4 ProfilePictureBackgroundColour = Colour4.FromHex("B493A1");
+
         public static readonly Colour4 IconButtonIconColour = Colour4.FromHex("B493A1");
 
         public static readonly Colour4 MusicPlayerProgressBarBackgroundColour = Colour4.FromHex("E9DCEB");
