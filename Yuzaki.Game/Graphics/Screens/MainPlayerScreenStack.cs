@@ -6,11 +6,13 @@ namespace Yuzaki.Game.Graphics.Screens;
 
 public partial class MainPlayerScreenStack : ScreenStack
 {
+    public MusicPlayer MusicPlayerComponent;
+
     public MainPlayerScreenStack()
     {
         InternalChildren = new Drawable[]
         {
-            new MusicPlayer
+            MusicPlayerComponent = new MusicPlayer
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

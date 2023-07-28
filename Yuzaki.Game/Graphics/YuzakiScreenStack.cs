@@ -1,9 +1,12 @@
-﻿using osu.Framework.Graphics;
+﻿using osu_database_reader.Components.Beatmaps;
+using osu.Framework.Allocation;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
 using Yuzaki.Game.Graphics.Components;
 using Yuzaki.Game.Graphics.Screens;
+using Yuzaki.Game.OsuElement;
 
 namespace Yuzaki.Game.Graphics
 {
@@ -16,6 +19,13 @@ namespace Yuzaki.Game.Graphics
         public ProfilePictureMenu ProfilePicture;
 
         public CircleIconButton SettingsButton;
+
+        public PlaylistDetail PlaylistDetailComponent;
+
+        public PlaylistMenu PlaylistMenuComponent;
+
+        [Resolved]
+        private OsuStableDatabase database { get; set; }
 
         public YuzakiScreenStack()
         {
@@ -55,18 +65,7 @@ namespace Yuzaki.Game.Graphics
                         Left = YuzakiStylingEnum.SCREEN_PADDING
                     }
                 },
-                new PlaylistDetail()
-                {
-                    Anchor = Anchor.TopRight,
-                    Origin = Anchor.TopRight,
-                    RelativeSizeAxes = Axes.Both,
-                    Margin = new MarginPadding()
-                    {
-                        Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
-                        Right = YuzakiStylingEnum.SCREEN_PADDING
-                    }
-                },
-                new PlaylistMenu()
+                PlaylistMenuComponent = new PlaylistMenu()
                 {
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
@@ -78,6 +77,30 @@ namespace Yuzaki.Game.Graphics
                     }
                 }
             };
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            PlaylistDetailComponent = new PlaylistDetail()
+            {
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.TopRight,
+                RelativeSizeAxes = Axes.Both,
+                Margin = new MarginPadding()
+                {
+                    Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
+                    Right = YuzakiStylingEnum.SCREEN_PADDING
+                }
+            };
+
+            foreach (BeatmapEntry entry in database.GetUniqueBeatmapEntries())
+            {
+                PlaylistDetailComponent.AddSongEntry(entry);
+            }
+
+            AddInternal(PlaylistDetailComponent);
         }
     }
 }

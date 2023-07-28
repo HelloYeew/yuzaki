@@ -1,4 +1,6 @@
-﻿using osu.Framework.Allocation;
+﻿using osu_database_reader.Components.Beatmaps;
+using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -13,6 +15,10 @@ namespace Yuzaki.Game.Graphics.Components;
 /// </summary>
 public partial class PlaylistSongEntry : CompositeDrawable
 {
+    public Bindable<BeatmapEntry> BeatmapEntry { get; set; }
+    public string SongName { get; set; }
+    public string SongArtist { get; set; }
+
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
     {
@@ -81,15 +87,15 @@ public partial class PlaylistSongEntry : CompositeDrawable
                                 {
                                     Anchor = Anchor.CentreLeft,
                                     Origin = Anchor.CentreLeft,
-                                    Text = "Song Name",
+                                    Text = SongName,
                                     Font = YuzakiFont.GetFont(YuzakiFont.Typeface.Saira, 20)
                                 },
                                 new YuzakiSpriteText()
                                 {
                                     Anchor = Anchor.CentreLeft,
                                     Origin = Anchor.CentreLeft,
-                                    Text = "Artist Name",
-                                    Font = YuzakiFont.GetFont(YuzakiFont.Typeface.Saira, 16)
+                                    Text = SongArtist,
+                                    Font = YuzakiFont.GetFont()
                                 },
                             }
                         }
@@ -97,5 +103,11 @@ public partial class PlaylistSongEntry : CompositeDrawable
                 }
             }
         };
+
+        BeatmapEntry.BindValueChanged(beatmapEntry =>
+        {
+            SongName = beatmapEntry.NewValue.Title;
+            SongArtist = beatmapEntry.NewValue.Artist;
+        }, true);
     }
 }

@@ -1,4 +1,7 @@
-﻿using osu.Framework.Allocation;
+﻿using System.Collections.Generic;
+using osu_database_reader.Components.Beatmaps;
+using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -9,6 +12,22 @@ namespace Yuzaki.Game.Graphics.Components
 {
     public partial class PlaylistDetail : CompositeDrawable
     {
+        private List<Drawable> playlistDetailChildren;
+
+        public PlaylistDetail()
+        {
+            playlistDetailChildren = new List<Drawable>
+            {
+                new PlaylistInfo()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.X,
+                    Size = new Vector2(1, 220),
+                }
+            };
+        }
+
         [BackgroundDependencyLoader]
         private void load(TextureStore textureStore)
         {
@@ -55,78 +74,31 @@ namespace Yuzaki.Game.Graphics.Components
                                     Direction = FillDirection.Vertical,
                                     Spacing = new Vector2(0, 8),
                                     Name = "FillFlowPlaylistContainer",
-                                    Children = new Drawable[]
-                                    {
-                                        new PlaylistInfo()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 220),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        },
-                                        new PlaylistSongEntry()
-                                        {
-                                            Anchor = Anchor.Centre,
-                                            Origin = Anchor.Centre,
-                                            Name = "PlaylistSongsContainer",
-                                            RelativeSizeAxes = Axes.X,
-                                            Size = new Vector2(1, 64),
-                                        }
-                                    }
+                                    Children = playlistDetailChildren
                                 }
                             }
                         }
                     }
                 }
             };
+        }
+
+        /// <summary>
+        /// Add a <see cref="BeatmapEntry"/> to the playlist.
+        /// </summary>
+        /// <param name="entry">The beatmap entry to add.</param>
+        public void AddSongEntry(BeatmapEntry entry)
+        {
+            playlistDetailChildren.Add(new PlaylistSongEntry()
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.X,
+                BeatmapEntry = new Bindable<BeatmapEntry>(entry),
+                SongName = entry.Title,
+                SongArtist = entry.Artist,
+                Size = new Vector2(1, 64),
+            });
         }
     }
 }

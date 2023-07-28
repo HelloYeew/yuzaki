@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
 using Yuzaki.Game.Graphics;
+using Yuzaki.Game.OsuElement;
 
 namespace Yuzaki.Game
 {
@@ -16,12 +17,15 @@ namespace Yuzaki.Game
 
         private YuzakiScreenStack mainScreenStack;
 
+        private OsuStableDatabase osuStableDatabase;
+
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
         [BackgroundDependencyLoader]
         private void load()
         {
+            dependencies.CacheAs(osuStableDatabase = new OsuStableDatabase());
             Add(mainScreenStack = new YuzakiScreenStack());
         }
 
