@@ -1,6 +1,4 @@
 ﻿using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
@@ -57,57 +55,26 @@ namespace Yuzaki.Game.Graphics
                         Left = YuzakiStylingEnum.SCREEN_PADDING
                     }
                 },
-                new Container()
+                new PlaylistDetail()
                 {
                     Anchor = Anchor.TopRight,
                     Origin = Anchor.TopRight,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.765f, 0.75f),
-                    Masking = true,
-                    CornerRadius = YuzakiStylingEnum.CORNER_RADIUS,
-                    // Relative margin to the profile picture
                     Margin = new MarginPadding()
                     {
                         Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
                         Right = YuzakiStylingEnum.SCREEN_PADDING
-                    },
-                    Children = new Drawable[]
-                    {
-                        new Box()
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1f),
-                            Alpha = 0.6f,
-                            Colour = YuzakiColour.MusicListBackgroundColour
-                        }
                     }
                 },
-                new Container()
+                new PlaylistMenu()
                 {
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.2f, 0.75f),
-                    Masking = true,
-                    CornerRadius = YuzakiStylingEnum.CORNER_RADIUS,
                     Margin = new MarginPadding()
                     {
                         Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
                         Left = YuzakiStylingEnum.SCREEN_PADDING
-                    },
-                    Children = new Drawable[]
-                    {
-                        new Box()
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Size = new Vector2(1f),
-                            Alpha = 0.6f,
-                            Colour = YuzakiColour.PlaylistListBackgroundColour
-                        }
                     }
                 }
             };
