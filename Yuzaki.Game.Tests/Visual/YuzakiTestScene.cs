@@ -1,5 +1,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
+using Yuzaki.Game.Audio;
+using Yuzaki.Game.OsuElement;
 
 namespace Yuzaki.Game.Tests.Visual
 {
@@ -13,7 +15,8 @@ namespace Yuzaki.Game.Tests.Visual
         {
             IReadOnlyDependencyContainer baseDependencies = base.CreateChildDependencies(parent);
             Dependencies = new DependencyContainer(baseDependencies);
-
+            Dependencies.CacheAs(new OsuStableDatabase());
+            Dependencies.CacheAs(new YuzakiPlayerManager());
             return Dependencies;
         }
 

@@ -4,12 +4,20 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
 using osuTK;
+using Yuzaki.Game.Audio;
 
 namespace Yuzaki.Game.Graphics.Components
 {
     public partial class MusicPlayer : CompositeDrawable
     {
+        [Resolved]
+        private YuzakiPlayerManager playerManager { get; set; }
+
+        public string SongName { get; set; }
+        public string ArtistName { get; set; }
+
         [BackgroundDependencyLoader]
         private void load(TextureStore textureStore)
         {
@@ -84,14 +92,14 @@ namespace Yuzaki.Game.Graphics.Components
                                             {
                                                 Anchor = Anchor.CentreLeft,
                                                 Origin = Anchor.CentreLeft,
-                                                Text = "Song Name",
+                                                Text = SongName,
                                                 Font = YuzakiFont.GetFont(size: 30f, weight: YuzakiFont.FontWeight.Bold),
                                             },
                                             new YuzakiSpriteText()
                                             {
                                                 Anchor = Anchor.CentreLeft,
                                                 Origin = Anchor.CentreLeft,
-                                                Text = "Artist Name",
+                                                Text = ArtistName,
                                                 Font = YuzakiFont.GetFont(size: 20f)
                                             }
                                         }
@@ -259,6 +267,17 @@ namespace Yuzaki.Game.Graphics.Components
                     }
                 }
             };
+
+            playerManager.CurrentBeatmap.BindValueChanged(beatmap =>
+            {
+                Logger.Log($"Beatmap changed to {beatmap.NewValue?.Title} by {beatmap.NewValue?.Artist}", LoggingTarget.Runtime, LogLevel.Debug);
+
+                SongName = beatmap.NewValue?.Title;
+                ArtistName = beatmap.NewValue?.Artist;
+
+                Logger.Log($"Song name set to {SongName}", LoggingTarget.Runtime, LogLevel.Debug);
+                Logger.Log($"Artist name set to {ArtistName}", LoggingTarget.Runtime, LogLevel.Debug);
+            });
         }
     }
 }

@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
+using Yuzaki.Game.Audio;
 
 namespace Yuzaki.Game.Graphics.Components;
 
@@ -18,6 +19,11 @@ public partial class PlaylistSongEntry : CompositeDrawable
     public Bindable<BeatmapEntry> BeatmapEntry { get; set; }
     public string SongName { get; set; }
     public string SongArtist { get; set; }
+
+    private CircleIconButton playButton;
+
+    [Resolved]
+    private YuzakiPlayerManager playerManager { get; set; }
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
@@ -52,7 +58,7 @@ public partial class PlaylistSongEntry : CompositeDrawable
                     Padding = new MarginPadding(8),
                     Children = new Drawable[]
                     {
-                        new CircleIconButton(FontAwesome.Solid.Play)
+                        playButton = new CircleIconButton(FontAwesome.Solid.Play)
                         {
                             Anchor = Anchor.CentreLeft,
                             Origin = Anchor.CentreLeft,
@@ -109,5 +115,10 @@ public partial class PlaylistSongEntry : CompositeDrawable
             SongName = beatmapEntry.NewValue.Title;
             SongArtist = beatmapEntry.NewValue.Artist;
         }, true);
+
+        playButton.Action = () =>
+        {
+            playerManager.Play(BeatmapEntry.Value);
+        };
     }
 }

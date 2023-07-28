@@ -6,6 +6,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
+using Yuzaki.Game.Audio;
 using Yuzaki.Game.Graphics;
 using Yuzaki.Game.OsuElement;
 
@@ -26,6 +27,7 @@ namespace Yuzaki.Game
         private void load()
         {
             dependencies.CacheAs(osuStableDatabase = new OsuStableDatabase());
+            dependencies.CacheAs(new YuzakiPlayerManager());
             Add(mainScreenStack = new YuzakiScreenStack());
         }
 

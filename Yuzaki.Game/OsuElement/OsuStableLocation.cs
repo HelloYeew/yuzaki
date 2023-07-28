@@ -36,4 +36,9 @@ public class OsuStableLocation
     /// Get the default path of the osu!stable score database.
     /// </summary>
     public static string DefaultScoreDatabasePath { get; } = Path.Combine(DefaultLocation, ScoreDatabaseName);
+
+    /// <summary>
+    /// Get the default path of the osu!stable songs (beatmaps) folder.
+    /// </summary>
+    public static string DefaultSongsPath { get; } = Path.Combine(DefaultLocation, "Songs");
 }
