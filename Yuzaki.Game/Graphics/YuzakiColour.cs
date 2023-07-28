@@ -26,5 +26,7 @@ namespace Yuzaki.Game.Graphics
         public static readonly Colour4 MusicListBackgroundColour = Colour4.FromHex("2C1F3A");
 
         public static readonly Colour4 PlaylistListBackgroundColour = Colour4.FromHex("2C1F3A");
+
+        public static readonly Colour4 PlaylistEntryBackgroundColour = Colour4.FromHex("85719D");
     }
 }
