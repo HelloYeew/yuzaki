@@ -13,7 +13,12 @@ public partial class TestSceneIconButton : YuzakiTestScene
 {
     public TestSceneIconButton()
     {
-        Add(new YuzakiScreenStack());
+        Add(new YuzakiBackground
+        {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            RelativeSizeAxes = Axes.Both,
+        });
         Add(new Container
         {
             Anchor = Anchor.Centre,

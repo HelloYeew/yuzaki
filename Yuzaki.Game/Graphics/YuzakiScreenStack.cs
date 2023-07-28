@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
 using Yuzaki.Game.Graphics.Components;
@@ -15,6 +16,8 @@ namespace Yuzaki.Game.Graphics
         public MainPlayerScreenStack MainPlayerScreenStack;
 
         public ProfilePictureMenu ProfilePicture;
+
+        public CircleIconButton SettingsButton;
 
         public YuzakiScreenStack()
         {
@@ -36,20 +39,36 @@ namespace Yuzaki.Game.Graphics
                 {
                     Anchor = Anchor.TopRight,
                     Origin = Anchor.TopRight,
-                    Size = new Vector2(ProfilePictureMenu.ICON_SIZE)
+                    Size = new Vector2(ProfilePictureMenu.ICON_SIZE),
+                    Margin = new MarginPadding()
+                    {
+                        Top = YuzakiStylingEnum.SCREEN_PADDING,
+                        Right = YuzakiStylingEnum.SCREEN_PADDING
+                    }
+                },
+                SettingsButton = new CircleIconButton(FontAwesome.Solid.Cog)
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+                    Size = new Vector2(ProfilePictureMenu.ICON_SIZE),
+                    Margin = new MarginPadding()
+                    {
+                        Top = YuzakiStylingEnum.SCREEN_PADDING,
+                        Left = YuzakiStylingEnum.SCREEN_PADDING
+                    }
                 },
                 new Container()
                 {
                     Anchor = Anchor.TopRight,
                     Origin = Anchor.TopRight,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.765f, 0.78f),
+                    Size = new Vector2(0.765f, 0.75f),
                     Masking = true,
                     CornerRadius = YuzakiStylingEnum.CORNER_RADIUS,
-                    // TODO: Maybe this need to use RelativePositionAxes due to resizing
+                    // Relative margin to the profile picture
                     Margin = new MarginPadding()
                     {
-                        Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE,
+                        Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
                         Right = YuzakiStylingEnum.SCREEN_PADDING
                     },
                     Children = new Drawable[]
@@ -70,12 +89,12 @@ namespace Yuzaki.Game.Graphics
                     Anchor = Anchor.TopLeft,
                     Origin = Anchor.TopLeft,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.2f, 0.78f),
+                    Size = new Vector2(0.2f, 0.75f),
                     Masking = true,
                     CornerRadius = YuzakiStylingEnum.CORNER_RADIUS,
                     Margin = new MarginPadding()
                     {
-                        Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE,
+                        Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
                         Left = YuzakiStylingEnum.SCREEN_PADDING
                     },
                     Children = new Drawable[]

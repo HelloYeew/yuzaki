@@ -13,7 +13,7 @@ namespace Yuzaki.Game.Graphics.Components
 {
     public partial class ProfilePictureMenu : CompositeDrawable
     {
-        public static readonly int ICON_SIZE = 57;
+        public static readonly int ICON_SIZE = 50;
 
         [BackgroundDependencyLoader]
         private void load(GameHost host)
@@ -21,12 +21,6 @@ namespace Yuzaki.Game.Graphics.Components
             OnlineStore onlineStore = new OnlineStore();
 
             Sprite textureSprite;
-
-            Padding = new MarginPadding()
-            {
-                Top = 10,
-                Right = 10
-            };
 
             InternalChildren = new Drawable[]
             {

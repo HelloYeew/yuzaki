@@ -11,7 +11,12 @@ public partial class TestSceneMusicPlayer : YuzakiTestScene
 {
     public TestSceneMusicPlayer()
     {
-        Add(new YuzakiScreenStack());
+        Add(new YuzakiBackground
+        {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            RelativeSizeAxes = Axes.Both,
+        });
         Add(new Container
         {
             Anchor = Anchor.Centre,

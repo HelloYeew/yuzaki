@@ -12,7 +12,12 @@ public partial class TestSceneProfilePicture : YuzakiTestScene
 {
     public TestSceneProfilePicture()
     {
-        Add(new YuzakiScreenStack());
+        Add(new YuzakiBackground
+        {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            RelativeSizeAxes = Axes.Both,
+        });
         Add(new Container
         {
             Anchor = Anchor.Centre,
