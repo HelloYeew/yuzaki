@@ -44,9 +44,11 @@ namespace Yuzaki.DatabaseReader.Stable.OsuElement.Components.HitObjects
                         ((HitObjectSpinner) h).SoundSampleData = split[6];
                     break;
                 case HitObjectType.Hold:
-                    throw new NotImplementedException("Hold notes are not yet parsed.");
+                    Console.WriteLine("Hold notes are not yet parsed.");
+                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(t), "Bad hitobject type");
+                    Console.WriteLine(nameof(t), "Bad hitobject type");
+                    return null;
             }
 
             //note: parsed as decimal but cast to int in osu!

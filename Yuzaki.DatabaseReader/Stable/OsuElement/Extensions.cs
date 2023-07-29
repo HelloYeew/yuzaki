@@ -23,7 +23,7 @@ internal static class Extensions
 
             string stripped = str.TrimStart('[').TrimEnd(']');
             if (!Enum.TryParse(stripped, out BeatmapSection a))
-                throw new Exception("Unrecognized beatmap section: " + stripped);
+                Console.WriteLine("Unrecognized beatmap section: " + stripped);
             return a;
         }
 
@@ -39,7 +39,7 @@ internal static class Extensions
         while (!string.IsNullOrWhiteSpace(line = sr.ReadLine()))
         {
             if (!line.Contains(':'))
-                throw new Exception("Invalid key/value line: " + line);
+                Console.WriteLine("Invalid key/value line: " + line);
 
             int i = line.IndexOf(':');
 

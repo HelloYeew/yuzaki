@@ -1,11 +1,16 @@
-﻿using osu.Framework.Allocation;
+﻿using System.IO;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
+using osu.Framework.Platform;
 using osuTK;
 using Yuzaki.Game.Audio;
+using Yuzaki.Game.OsuElement;
+using Yuzaki.Game.Store;
 
 namespace Yuzaki.Game.Graphics.Components
 {
@@ -14,11 +19,19 @@ namespace Yuzaki.Game.Graphics.Components
         [Resolved]
         private YuzakiPlayerManager playerManager { get; set; }
 
+        [Resolved]
+        private YuzakiTextureStore textureStore { get; set; }
+
+        [Resolved]
+        private GameHost host { get; set; }
+
         private YuzakiSpriteText songNameText;
         private YuzakiSpriteText artistNameText;
+        private Sprite coverArtSprite;
+        private Texture defaultCoverArtTexture;
 
         [BackgroundDependencyLoader]
-        private void load(TextureStore textureStore)
+        private void load()
         {
             InternalChildren = new Drawable[]
             {
@@ -63,12 +76,13 @@ namespace Yuzaki.Game.Graphics.Components
                                         Size = new(80),
                                         Masking = true,
                                         CornerRadius = YuzakiStylingEnum.CORNER_RADIUS,
-                                        Child = new Sprite()
+                                        Child = coverArtSprite = new Sprite()
                                         {
                                             Anchor = Anchor.Centre,
                                             Origin = Anchor.Centre,
                                             RelativeSizeAxes = Axes.Both,
-                                            Texture = textureStore.Get("default_album.jpg")
+                                            Texture = defaultCoverArtTexture = textureStore.Get("default_album.jpg"),
+                                            FillMode = FillMode.Fill
                                         }
                                     }
                                 },
@@ -91,14 +105,14 @@ namespace Yuzaki.Game.Graphics.Components
                                             {
                                                 Anchor = Anchor.CentreLeft,
                                                 Origin = Anchor.CentreLeft,
-                                                Text = "",
+                                                Text = "No beatmap selected",
                                                 Font = YuzakiFont.GetFont(size: 30f, weight: YuzakiFont.FontWeight.Bold),
                                             },
                                             artistNameText = new YuzakiSpriteText()
                                             {
                                                 Anchor = Anchor.CentreLeft,
                                                 Origin = Anchor.CentreLeft,
-                                                Text = "",
+                                                Text = "Please select a beatmap to play!",
                                                 Font = YuzakiFont.GetFont(size: 20f)
                                             }
                                         }
@@ -269,8 +283,33 @@ namespace Yuzaki.Game.Graphics.Components
 
             playerManager.CurrentBeatmap.BindValueChanged(beatmap =>
             {
+                if (beatmap.NewValue == null)
+                {
+                    Logger.Log("No beatmap selected or beatmap is null, using default cover art instead.");
+                    songNameText.Text = "No beatmap selected";
+                    artistNameText.Text = "Please select a beatmap to play!";
+                    coverArtSprite.Texture = defaultCoverArtTexture;
+                }
+
+                // Update text
                 songNameText.Text = beatmap.NewValue?.Title;
                 artistNameText.Text = beatmap.NewValue?.Artist;
+
+                // Update cover art
+                string backgroundPath = Utility.GetBeatmapBackgroundPath(beatmap.NewValue);
+
+                if (backgroundPath == null)
+                {
+                    Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a background, using default cover art instead.");
+                    coverArtSprite.Texture = defaultCoverArtTexture;
+                }
+                else
+                {
+                    Logger.Log($"Found background for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
+                    FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
+                    coverArtSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
+                    fileStream.Dispose();
+                }
             });
         }
     }
