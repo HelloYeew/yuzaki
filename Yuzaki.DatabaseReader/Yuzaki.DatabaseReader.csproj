@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <NoWarn>CS8714,CS8603,CS8618,CS8625,CS8600,CS8601</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Stable\" />
+    </ItemGroup>
+
+</Project>

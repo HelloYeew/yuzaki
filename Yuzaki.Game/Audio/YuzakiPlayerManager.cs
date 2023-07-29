@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using ManagedBass;
-using osu_database_reader.Components.Beatmaps;
 using osu.Framework.Bindables;
+using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
 using Yuzaki.Game.OsuElement;
 
 namespace Yuzaki.Game.Audio;

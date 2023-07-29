@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using osu_database_reader.Components.Beatmaps;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -7,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osuTK;
+using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
 
 namespace Yuzaki.Game.Graphics.Components
 {

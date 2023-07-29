@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using osu_database_reader.BinaryFiles;
-using osu_database_reader.Components.Beatmaps;
 using osu.Framework.Logging;
+using Yuzaki.DatabaseReader.Stable.Database;
+using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
 
 namespace Yuzaki.Game.OsuElement;
 
@@ -13,10 +13,10 @@ namespace Yuzaki.Game.OsuElement;
 /// </summary>
 public class OsuStableDatabase
 {
-    public OsuDb OsuDatabase = new OsuDb();
-    public CollectionDb CollectionDatabase = new CollectionDb();
-    public ScoresDb ScoresDatabase = new ScoresDb();
-    public PresenceDb PresenceDatabase = new PresenceDb();
+    public OsuDatabase OsuDatabase = new OsuDatabase();
+    public CollectionDatabase CollectionDatabase = new CollectionDatabase();
+    public ScoreDatabase ScoreDatabase = new ScoreDatabase();
+    public PresenceDatabase PresenceDatabase = new PresenceDatabase();
 
     /// <summary>
     /// Boolean that indicate whether the databases is finished loaded or not.
@@ -32,10 +32,10 @@ public class OsuStableDatabase
     {
         try
         {
-            OsuDatabase = OsuDb.Read(OsuStableLocation.DefaultDatabasePath);
-            CollectionDatabase = CollectionDb.Read(OsuStableLocation.DefaultCollectionDatabasePath);
-            ScoresDatabase = ScoresDb.Read(OsuStableLocation.DefaultScoreDatabasePath);
-            PresenceDatabase = PresenceDb.Read(OsuStableLocation.DefaultPresenceDatabasePath);
+            OsuDatabase = OsuDatabase.Read(OsuStableLocation.DefaultDatabasePath);
+            CollectionDatabase = CollectionDatabase.Read(OsuStableLocation.DefaultCollectionDatabasePath);
+            ScoreDatabase = ScoreDatabase.Read(OsuStableLocation.DefaultScoreDatabasePath);
+            PresenceDatabase = PresenceDatabase.Read(OsuStableLocation.DefaultPresenceDatabasePath);
 
             Logger.Log($"Loaded osu!stable databases from {OsuStableLocation.DefaultLocation}", LoggingTarget.Database);
             Logger.Log($"Found osu!stable database of {OsuDatabase.AccountName} with {OsuDatabase.Beatmaps.Count}", LoggingTarget.Database);

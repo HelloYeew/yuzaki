@@ -1,9 +1,9 @@
-﻿using osu_database_reader.Components.Beatmaps;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
+using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
 using Yuzaki.Game.Graphics.Components;
 using Yuzaki.Game.Graphics.Screens;
 using Yuzaki.Game.OsuElement;
