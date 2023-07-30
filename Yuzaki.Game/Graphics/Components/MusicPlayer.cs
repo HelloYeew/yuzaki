@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -283,32 +284,41 @@ namespace Yuzaki.Game.Graphics.Components
 
             playerManager.CurrentBeatmap.BindValueChanged(beatmap =>
             {
-                if (beatmap.NewValue == null)
+                try
                 {
-                    Logger.Log("No beatmap selected or beatmap is null, using default cover art instead.");
-                    songNameText.Text = "No beatmap selected";
-                    artistNameText.Text = "Please select a beatmap to play!";
-                    coverArtSprite.Texture = defaultCoverArtTexture;
+                    if (beatmap.NewValue == null)
+                    {
+                        Logger.Log("No beatmap selected or beatmap is null, using default cover art instead.");
+                        songNameText.Text = "No beatmap selected";
+                        artistNameText.Text = "Please select a beatmap to play!";
+                        coverArtSprite.Texture = defaultCoverArtTexture;
+                    }
+
+                    // Update text
+                    songNameText.Text = beatmap.NewValue?.Title;
+                    artistNameText.Text = beatmap.NewValue?.Artist;
+
+                    // Update cover art
+                    string backgroundPath = Utility.GetBeatmapBackgroundPath(beatmap.NewValue);
+
+                    if (backgroundPath == null)
+                    {
+                        Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a background, using default cover art instead.");
+                        coverArtSprite.Texture = defaultCoverArtTexture;
+                    }
+                    else
+                    {
+                        Logger.Log($"Found background for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
+                        FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
+                        coverArtSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
+                        fileStream.Dispose();
+                    }
                 }
-
-                // Update text
-                songNameText.Text = beatmap.NewValue?.Title;
-                artistNameText.Text = beatmap.NewValue?.Artist;
-
-                // Update cover art
-                string backgroundPath = Utility.GetBeatmapBackgroundPath(beatmap.NewValue);
-
-                if (backgroundPath == null)
+                catch (Exception e)
                 {
-                    Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a background, using default cover art instead.");
+                    Logger.Error(e, "Failed to load image");
+                    Logger.Log("Using default background instead.");
                     coverArtSprite.Texture = defaultCoverArtTexture;
-                }
-                else
-                {
-                    Logger.Log($"Found background for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
-                    FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
-                    coverArtSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
-                    fileStream.Dispose();
                 }
             });
         }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -53,26 +54,35 @@ namespace Yuzaki.Game.Graphics
 
             playerManager.CurrentBeatmap.BindValueChanged(beatmap =>
             {
-                if (beatmap.NewValue == null)
+                try
                 {
-                    Logger.Log("No beatmap selected or beatmap is null, using default background instead.");
-                    backgroundSprite.Texture = defaultBackgroundTexture;
-                    return;
-                }
+                    if (beatmap.NewValue == null)
+                    {
+                        Logger.Log("No beatmap selected or beatmap is null, using default background instead.");
+                        backgroundSprite.Texture = defaultBackgroundTexture;
+                        return;
+                    }
 
-                string backgroundPath = Utility.GetBeatmapBackgroundPath(beatmap.NewValue);
+                    string backgroundPath = Utility.GetBeatmapBackgroundPath(beatmap.NewValue);
 
-                if (backgroundPath == null)
-                {
-                    Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a background, using default background instead.");
-                    backgroundSprite.Texture = defaultBackgroundTexture;
+                    if (backgroundPath == null)
+                    {
+                        Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a background, using default background instead.");
+                        backgroundSprite.Texture = defaultBackgroundTexture;
+                    }
+                    else
+                    {
+                        Logger.Log($"Found background for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
+                        FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
+                        backgroundSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
+                        fileStream.Dispose();
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Logger.Log($"Found background for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
-                    FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
-                    backgroundSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
-                    fileStream.Dispose();
+                    Logger.Error(e, "Failed to load background.");
+                    Logger.Log("Using default background instead.");
+                    backgroundSprite.Texture = defaultBackgroundTexture;
                 }
             }, true);
         }
