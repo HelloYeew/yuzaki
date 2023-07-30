@@ -20,6 +20,14 @@ namespace Yuzaki.Game
 
         private OsuStableDatabase osuStableDatabase;
 
+        private Stopwatch startupTimer;
+
+        public YuzakiGame()
+        {
+            startupTimer = Stopwatch.StartNew();
+            startupTimer.Start();
+        }
+
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
             dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
@@ -53,6 +61,8 @@ namespace Yuzaki.Game
             });
 
             dependencies.CacheAs(mainScreenStack);
+
+            Logger.Log($"⏱️ Startup completed in {startupTimer.ElapsedMilliseconds}ms.", LoggingTarget.Performance);
         }
 
         private Task asyncLoadStream;

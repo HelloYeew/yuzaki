@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -72,7 +73,7 @@ namespace Yuzaki.Game.Graphics.Components
         {
             base.LoadComplete();
 
-            Scheduler.Add(() =>
+            Thread thread = new Thread(() =>
             {
                 string playerName = database.OsuDatabase.AccountName;
 
@@ -127,6 +128,7 @@ namespace Yuzaki.Game.Graphics.Components
                 Stream stream = onlineStore.GetStream($"https://a.ppy.sh/{profileId}");
                 profilePictureSprite.Texture = Texture.FromStream(host.Renderer, stream);
             });
+            thread.Start();
         }
     }
 }
