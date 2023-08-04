@@ -136,7 +136,7 @@ public partial class PlaylistSongEntry : CompositeDrawable
         };
     }
 
-    private bool lastUpdateState = true;
+    // private bool lastUpdateState = true;
 
     protected override void Update()
     {
