@@ -37,6 +37,7 @@ public partial class PlaylistSongEntry : CompositeDrawable
     private CircleIconButton playButton;
 
     private Texture defaultAlbumArtTexture;
+    private Texture albumArtTexture;
     private YuzakiSpriteText songNameText;
     private YuzakiSpriteText artistNameText;
     private Sprite albumArt;
@@ -135,11 +136,34 @@ public partial class PlaylistSongEntry : CompositeDrawable
         };
     }
 
+    private bool lastUpdateState = true;
+
+    protected override void Update()
+    {
+        base.Update();
+
+        // This is an easy pooling for the album art, it's not the best but it works for now
+        // This still make GPU usage go up by a lot so I'll have to find a better way to do this
+        // if (RequiresChildrenUpdate != lastUpdateState)
+        // {
+        //     if (RequiresChildrenUpdate)
+        //     {
+        //         UpdateAlbumArt(BeatmapEntry.Value);
+        //     }
+        //     else
+        //     {
+        //         DisposeAlbumTexture();
+        //     }
+        //
+        //     lastUpdateState = RequiresChildrenUpdate;
+        // }
+    }
+
     /// <summary>
     /// Update the album art of the song entry
     /// </summary>
     /// <param name="beatmap">The beatmap to update the album art from</param>
-    private void UpdateAlbumArt(BeatmapEntry beatmap)
+    public void UpdateAlbumArt(BeatmapEntry beatmap)
     {
         if (beatmap == null)
         {
@@ -163,8 +187,16 @@ public partial class PlaylistSongEntry : CompositeDrawable
         {
             Logger.Log($"Found album art for beatmap {beatmap.Artist} - {beatmap.Title} ({beatmap.BeatmapId}) at {albumArtPath}.");
             FileStream fileStream = new FileStream(albumArtPath, FileMode.Open, FileAccess.Read);
-            albumArt.Texture = Texture.FromStream(host.Renderer, fileStream);
+            albumArtTexture = Texture.FromStream(host.Renderer, fileStream);
+            albumArt.Texture = albumArtTexture;
             fileStream.Dispose();
         }
+    }
+
+    public void DisposeAlbumTexture()
+    {
+        albumArt.Texture = defaultAlbumArtTexture;
+        albumArtTexture?.Dispose();
+        Logger.Log("Disposing album art texture.");
     }
 }

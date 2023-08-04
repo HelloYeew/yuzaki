@@ -12,11 +12,11 @@ namespace Yuzaki.Game.Graphics.Components
 {
     public partial class PlaylistDetail : CompositeDrawable
     {
-        private List<Drawable> playlistDetailChildren;
+        public List<Drawable> PlaylistDetailChildren;
 
         public PlaylistDetail()
         {
-            playlistDetailChildren = new List<Drawable>
+            PlaylistDetailChildren = new List<Drawable>
             {
                 new PlaylistInfo()
                 {
@@ -74,7 +74,7 @@ namespace Yuzaki.Game.Graphics.Components
                                     Direction = FillDirection.Vertical,
                                     Spacing = new Vector2(0, 8),
                                     Name = "FillFlowPlaylistContainer",
-                                    Children = playlistDetailChildren
+                                    Children = PlaylistDetailChildren
                                 }
                             }
                         }
@@ -89,7 +89,7 @@ namespace Yuzaki.Game.Graphics.Components
         /// <param name="entry">The beatmap entry to add.</param>
         public void AddSongEntry(BeatmapEntry entry)
         {
-            playlistDetailChildren.Add(new PlaylistSongEntry()
+            PlaylistDetailChildren.Add(new PlaylistSongEntry()
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
