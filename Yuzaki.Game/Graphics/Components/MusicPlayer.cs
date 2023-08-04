@@ -45,9 +45,9 @@ namespace Yuzaki.Game.Graphics.Components
                 {
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
-                    RelativeSizeAxes = Axes.X,
+                    RelativeSizeAxes = Axes.Both,
                     Width = 0.98f,
-                    Height = 100,
+                    Height = 0.12f,
                     Masking = true,
                     CornerRadius = 10,
                     Margin = new MarginPadding(YuzakiStylingEnum.SCREEN_PADDING),

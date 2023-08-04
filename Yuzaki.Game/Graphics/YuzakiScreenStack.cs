@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using System.Threading;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
@@ -95,12 +96,17 @@ namespace Yuzaki.Game.Graphics
                 }
             };
 
-            foreach (BeatmapEntry entry in database.GetUniqueBeatmapEntries())
+            Thread thread = new Thread(() =>
             {
-                PlaylistDetailComponent.AddSongEntry(entry);
-            }
+                foreach (BeatmapEntry entry in database.GetUniqueBeatmapEntries())
+                {
+                    PlaylistDetailComponent.AddSongEntry(entry);
+                }
 
-            AddInternal(PlaylistDetailComponent);
+                Scheduler.Add(() => AddInternal(PlaylistDetailComponent));
+            });
+
+            thread.Start();
         }
     }
 }

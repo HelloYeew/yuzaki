@@ -62,7 +62,7 @@ namespace Yuzaki.Game.Graphics.Components
                             RelativeSizeAxes = Axes.Both,
                             ScrollbarVisible = true,
                             Margin = new MarginPadding(28),
-                            Size = new Vector2(0.9f),
+                            Size = new Vector2(0.95f, 0.9f),
                             Children = new Drawable[]
                             {
                                 new FillFlowContainer()
