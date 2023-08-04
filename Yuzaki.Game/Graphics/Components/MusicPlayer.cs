@@ -308,7 +308,7 @@ namespace Yuzaki.Game.Graphics.Components
                     }
                     else
                     {
-                        Logger.Log($"Found background for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
+                        Logger.Log($"Found art for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
                         FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
                         coverArtSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
                         fileStream.Dispose();

@@ -1,4 +1,5 @@
-﻿using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
+﻿using osu.Framework.Logging;
+using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
 using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Events;
 using Yuzaki.DatabaseReader.Stable.OsuElement.Components.HitObjects;
 
@@ -23,7 +24,7 @@ internal static class Extensions
 
             string stripped = str.TrimStart('[').TrimEnd(']');
             if (!Enum.TryParse(stripped, out BeatmapSection a))
-                Console.WriteLine("Unrecognized beatmap section: " + stripped);
+                Logger.Log($"[DatabaseReader] Error in ReadUntilSectionStart > Unknown section: {stripped}", LoggingTarget.Performance);
             return a;
         }
 
@@ -39,7 +40,7 @@ internal static class Extensions
         while (!string.IsNullOrWhiteSpace(line = sr.ReadLine()))
         {
             if (!line.Contains(':'))
-                Console.WriteLine("Invalid key/value line: " + line);
+                Logger.Log($"[DatabaseReader] Invalid key/value line: {line}", LoggingTarget.Performance);
 
             int i = line.IndexOf(':');
 

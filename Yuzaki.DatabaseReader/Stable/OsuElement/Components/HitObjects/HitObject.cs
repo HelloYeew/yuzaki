@@ -1,4 +1,5 @@
-﻿using OsuDatabaseReader.OsuElement;
+﻿using osu.Framework.Logging;
+using OsuDatabaseReader.OsuElement;
 
 namespace Yuzaki.DatabaseReader.Stable.OsuElement.Components.HitObjects
 {
@@ -44,10 +45,10 @@ namespace Yuzaki.DatabaseReader.Stable.OsuElement.Components.HitObjects
                         ((HitObjectSpinner) h).SoundSampleData = split[6];
                     break;
                 case HitObjectType.Hold:
-                    Console.WriteLine("Hold notes are not yet parsed.");
+                    Logger.Log("[DatabaseReader] Error in HitObject : Hold notes are not yet parsed.", LoggingTarget.Performance);
                     return null;
                 default:
-                    Console.WriteLine(nameof(t), "Bad hitobject type");
+                    Logger.Log($"[DatabaseReader] Error in HitObject : {nameof(t)} Bad hitobject type", LoggingTarget.Performance);
                     return null;
             }
 

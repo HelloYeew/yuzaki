@@ -7,4 +7,8 @@
         <NoWarn>CS8714,CS8603,CS8618,CS8625,CS8600,CS8601</NoWarn>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ppy.osu.Framework" Version="2023.801.0" />
+    </ItemGroup>
+
 </Project>

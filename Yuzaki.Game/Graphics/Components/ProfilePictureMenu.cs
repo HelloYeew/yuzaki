@@ -73,7 +73,7 @@ namespace Yuzaki.Game.Graphics.Components
         {
             base.LoadComplete();
 
-            Thread thread = new Thread(() =>
+            Thread getImageThread = new Thread(() =>
             {
                 string playerName = database.OsuDatabase.AccountName;
 
@@ -128,7 +128,7 @@ namespace Yuzaki.Game.Graphics.Components
                 Stream stream = onlineStore.GetStream($"https://a.ppy.sh/{profileId}");
                 profilePictureSprite.Texture = Texture.FromStream(host.Renderer, stream);
             });
-            thread.Start();
+            getImageThread.Start();
         }
     }
 }
