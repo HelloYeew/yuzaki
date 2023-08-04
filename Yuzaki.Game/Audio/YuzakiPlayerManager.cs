@@ -13,6 +13,7 @@ namespace Yuzaki.Game.Audio;
 public class YuzakiPlayerManager
 {
     public Bindable<BeatmapEntry> CurrentBeatmap = new Bindable<BeatmapEntry>();
+    public BindableBool Playing = new BindableBool(false);
 
     private int fileStream;
 
@@ -37,6 +38,7 @@ public class YuzakiPlayerManager
 
         fileStream = Bass.CreateStream(audioPath);
         Bass.ChannelPlay(fileStream);
+        Playing.Value = true;
         CurrentBeatmap.Value = beatmapEntry;
     }
 
@@ -48,6 +50,7 @@ public class YuzakiPlayerManager
         if (fileStream == 0) return;
 
         Bass.ChannelPlay(fileStream);
+        Playing.Value = true;
     }
 
     /// <summary>
@@ -58,6 +61,7 @@ public class YuzakiPlayerManager
         if (fileStream == 0) return;
 
         Bass.ChannelPause(fileStream);
+        Playing.Value = false;
     }
 
     /// <summary>

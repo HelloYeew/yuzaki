@@ -34,6 +34,7 @@ namespace Yuzaki.Game.Graphics.Components
         private YuzakiSpriteText currentTimeText;
         private YuzakiSpriteText totalTimeText;
         private ProgressBar progressBar;
+        private CircleIconButton playButton;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -154,7 +155,7 @@ namespace Yuzaki.Game.Graphics.Components
                                                         Origin = Anchor.Centre,
                                                         Size = new Vector2(35)
                                                     },
-                                                    new CircleIconButton(FontAwesome.Solid.Play)
+                                                    playButton = new CircleIconButton(FontAwesome.Solid.Play)
                                                     {
                                                         Anchor = Anchor.Centre,
                                                         Origin = Anchor.Centre,
@@ -322,6 +323,29 @@ namespace Yuzaki.Game.Graphics.Components
                 }
 
                 updateTotalTime();
+            });
+
+            playButton.Action = () =>
+            {
+                if (playerManager.CurrentBeatmap.Value == null)
+                {
+                    Logger.Log("No beatmap selected, cannot play.");
+                    return;
+                }
+
+                if (playerManager.IsPlaying())
+                {
+                    playerManager.Pause();
+                }
+                else
+                {
+                    playerManager.Play();
+                }
+            };
+
+            playerManager.Playing.BindValueChanged(playing =>
+            {
+                playButton.IconSprite.Icon = playing.NewValue ? FontAwesome.Solid.Pause : FontAwesome.Solid.Play;
             });
         }
 

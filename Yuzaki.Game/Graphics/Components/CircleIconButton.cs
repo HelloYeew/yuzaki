@@ -13,6 +13,7 @@ namespace Yuzaki.Game.Graphics.Components
     {
         private IconUsage icon;
 
+        public SpriteIcon IconSprite;
         public Colour4 BackgroundColour { get; set; } = YuzakiColour.CircleButtonBackgroundColour;
         public Colour4 IconColour { get; set; } = YuzakiColour.CircleButtonIconColour;
 
@@ -31,7 +32,7 @@ namespace Yuzaki.Game.Graphics.Components
                     RelativePositionAxes = Axes.Both,
                     Size = new Vector2(1f)
                 },
-                new SpriteIcon
+                IconSprite = new SpriteIcon
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,

@@ -32,6 +32,7 @@ namespace Yuzaki.Game.Graphics
         [BackgroundDependencyLoader]
         private void load()
         {
+            defaultBackgroundTexture = textureStore.Get("default_background.jpg");
             InternalChildren = new Drawable[]
             {
                 backgroundSprite = new Sprite
@@ -40,7 +41,7 @@ namespace Yuzaki.Game.Graphics
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     FillMode = FillMode.Fill,
-                    Texture = defaultBackgroundTexture = textureStore.Get("default_background.jpg")
+                    Texture = defaultBackgroundTexture
                 },
                 new Box
                 {
