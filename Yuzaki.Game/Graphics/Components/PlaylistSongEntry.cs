@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -132,24 +131,8 @@ public partial class PlaylistSongEntry : CompositeDrawable
 
         playButton.Action = () =>
         {
-            playerManager.Play(BeatmapEntry.Value);
+            playerManager.PlayNewBeatmap(BeatmapEntry.Value);
         };
-    }
-
-    protected override void LoadComplete()
-    {
-        base.LoadComplete();
-
-        // Currently not bind due to memory consumption
-        // BeatmapEntry.BindValueChanged(beatmap =>
-        // {
-        //     Thread updateAlbumArtThread = new Thread(() =>
-        //     {
-        //         UpdateAlbumArt(BeatmapEntry.Value);
-        //     });
-        //     updateAlbumArtThread.IsBackground = true;
-        //     updateAlbumArtThread.Start();
-        // }, true);
     }
 
     /// <summary>

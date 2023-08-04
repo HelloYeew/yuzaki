@@ -12,6 +12,7 @@ using osuTK;
 using Yuzaki.Game.Audio;
 using Yuzaki.Game.OsuElement;
 using Yuzaki.Game.Store;
+using Yuzaki.Game.Utils;
 
 namespace Yuzaki.Game.Graphics.Components
 {
@@ -30,6 +31,9 @@ namespace Yuzaki.Game.Graphics.Components
         private YuzakiSpriteText artistNameText;
         private Sprite coverArtSprite;
         private Texture defaultCoverArtTexture;
+        private YuzakiSpriteText currentTimeText;
+        private YuzakiSpriteText totalTimeText;
+        private ProgressBar progressBar;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -174,7 +178,7 @@ namespace Yuzaki.Game.Graphics.Components
                                                 Spacing = new Vector2(5),
                                                 Children = new Drawable[]
                                                 {
-                                                    new YuzakiSpriteText()
+                                                    currentTimeText = new YuzakiSpriteText()
                                                     {
                                                         Anchor = Anchor.Centre,
                                                         Origin = Anchor.Centre,
@@ -190,28 +194,24 @@ namespace Yuzaki.Game.Graphics.Components
                                                         Height = 10,
                                                         Masking = true,
                                                         CornerRadius = 5,
-                                                        Children = new Drawable[]
+                                                        Child = progressBar = new ProgressBar(true)
                                                         {
-                                                            new Box()
+                                                            Anchor = Anchor.CentreLeft,
+                                                            Origin = Anchor.CentreLeft,
+                                                            RelativeSizeAxes = Axes.X,
+                                                            Height = 10,
+                                                            FillColour = YuzakiColour.MusicPlayerProgressBarForegroundColour,
+                                                            BackgroundColour = YuzakiColour.MusicPlayerProgressBarBackgroundColour,
+                                                            OnSeek = (progress) =>
                                                             {
-                                                                Anchor = Anchor.CentreLeft,
-                                                                Origin = Anchor.CentreLeft,
-                                                                RelativeSizeAxes = Axes.X,
-                                                                Height = 10,
-                                                                Colour = YuzakiColour.MusicPlayerProgressBarBackgroundColour
-                                                            },
-                                                            new Box()
-                                                            {
-                                                                Anchor = Anchor.CentreLeft,
-                                                                Origin = Anchor.CentreLeft,
-                                                                RelativeSizeAxes = Axes.X,
-                                                                Width = 0.5f,
-                                                                Height = 10,
-                                                                Colour = YuzakiColour.MusicPlayerProgressBarForegroundColour
-                                                            },
+                                                                if (playerManager.CurrentBeatmap != null)
+                                                                {
+                                                                    playerManager.Seek(progress);
+                                                                }
+                                                            }
                                                         }
                                                     },
-                                                    new YuzakiSpriteText()
+                                                    totalTimeText = new YuzakiSpriteText()
                                                     {
                                                         Anchor = Anchor.Centre,
                                                         Origin = Anchor.Centre,
@@ -303,12 +303,12 @@ namespace Yuzaki.Game.Graphics.Components
 
                     if (backgroundPath == null)
                     {
-                        Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a background, using default cover art instead.");
+                        Logger.Log($"Beatmap {beatmap.NewValue?.Artist} - {beatmap.NewValue?.Title} ({beatmap.NewValue?.BeatmapId}) doesn't have a background, using default cover art instead.");
                         coverArtSprite.Texture = defaultCoverArtTexture;
                     }
                     else
                     {
-                        Logger.Log($"Found art for beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) at {backgroundPath}.");
+                        Logger.Log($"Found art for beatmap {beatmap.NewValue?.Artist} - {beatmap.NewValue?.Title} ({beatmap.NewValue?.BeatmapId}) at {backgroundPath}.");
                         FileStream fileStream = new FileStream(backgroundPath, FileMode.Open, FileAccess.Read);
                         coverArtSprite.Texture = Texture.FromStream(host.Renderer, fileStream);
                         fileStream.Dispose();
@@ -320,7 +320,33 @@ namespace Yuzaki.Game.Graphics.Components
                     Logger.Log("Using default background instead.");
                     coverArtSprite.Texture = defaultCoverArtTexture;
                 }
+
+                updateTotalTime();
             });
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+
+            updateCurrentTime();
+            progressBar.EndTime = playerManager.CurrentBeatmap.Value == null ? 0 : playerManager.GetTotalTime();
+            progressBar.CurrentTime = playerManager.CurrentBeatmap.Value == null ? 0 : playerManager.GetCurrentTime();
+        }
+
+        private void updateCurrentTime()
+        {
+            currentTimeText.Text = playerManager.CurrentBeatmap.Value == null ? "0:00" : TextFormatUtils.GetFormattedTime(playerManager.GetCurrentTime());
+        }
+
+        private void updateTotalTime()
+        {
+            totalTimeText.Text = playerManager.CurrentBeatmap.Value == null ? "0:00" : TextFormatUtils.GetFormattedTime(playerManager.GetTotalTime());
+        }
+
+        private void updateTrackText()
+        {
+            songNameText.Text = playerManager.CurrentBeatmap.Value?.Title;
         }
     }
 }
