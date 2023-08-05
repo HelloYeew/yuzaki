@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Platform;
 using osu.Framework;
-using Yuzaki.Game;
 
 namespace Yuzaki.Desktop
 {
@@ -9,7 +8,7 @@ namespace Yuzaki.Desktop
         public static void Main()
         {
             using (GameHost host = Host.GetSuitableDesktopHost(@"Yuzaki"))
-            using (osu.Framework.Game game = new YuzakiGame())
+            using (osu.Framework.Game game = new YuzakiGameDesktop())
                 host.Run(game);
         }
     }
