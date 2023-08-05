@@ -35,6 +35,8 @@ namespace Yuzaki.Game.Graphics.Components
         private YuzakiSpriteText totalTimeText;
         private ProgressBar progressBar;
         private CircleIconButton playButton;
+        private IconButton previousButton;
+        private IconButton nextButton;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -149,7 +151,7 @@ namespace Yuzaki.Game.Graphics.Components
                                                 Spacing = new Vector2(30),
                                                 Children = new Drawable[]
                                                 {
-                                                    new IconButton(FontAwesome.Solid.StepBackward)
+                                                    previousButton = new IconButton(FontAwesome.Solid.StepBackward)
                                                     {
                                                         Anchor = Anchor.Centre,
                                                         Origin = Anchor.Centre,
@@ -161,7 +163,7 @@ namespace Yuzaki.Game.Graphics.Components
                                                         Origin = Anchor.Centre,
                                                         Size = new Vector2(40)
                                                     },
-                                                    new IconButton(FontAwesome.Solid.StepForward)
+                                                    nextButton = new IconButton(FontAwesome.Solid.StepForward)
                                                     {
                                                         Anchor = Anchor.Centre,
                                                         Origin = Anchor.Centre,
@@ -343,6 +345,16 @@ namespace Yuzaki.Game.Graphics.Components
                 }
             };
 
+            previousButton.Action = () =>
+            {
+                playerManager.Previous();
+            };
+
+            nextButton.Action = () =>
+            {
+                playerManager.Next();
+            };
+
             playerManager.Playing.BindValueChanged(playing =>
             {
                 playButton.IconSprite.Icon = playing.NewValue ? FontAwesome.Solid.Pause : FontAwesome.Solid.Play;
@@ -356,6 +368,15 @@ namespace Yuzaki.Game.Graphics.Components
             updateCurrentTime();
             progressBar.EndTime = playerManager.CurrentBeatmap.Value == null ? 0 : playerManager.GetTotalTime();
             progressBar.CurrentTime = playerManager.CurrentBeatmap.Value == null ? 0 : playerManager.GetCurrentTime();
+
+            // Allow auto skip if already playing
+            if (playerManager.CurrentBeatmap.Value != null)
+            {
+                if (playerManager.HasEnded())
+                {
+                    playerManager.Next();
+                }
+            }
         }
 
         private void updateCurrentTime()

@@ -18,6 +18,8 @@ public class OsuStableDatabase
     public ScoreDatabase ScoreDatabase = new ScoreDatabase();
     public PresenceDatabase PresenceDatabase = new PresenceDatabase();
 
+    private List<BeatmapEntry> uniqueBeatmapEntries;
+
     /// <summary>
     /// Boolean that indicate whether the databases is finished loaded or not.
     /// </summary>
@@ -46,6 +48,8 @@ public class OsuStableDatabase
             Logger.Error(e, "Failed to load osu!stable databases");
         }
 
+        uniqueBeatmapEntries = getUniqueBeatmapEntries();
+
         IsLoaded = true;
     }
 
@@ -53,7 +57,7 @@ public class OsuStableDatabase
     /// Get the list of <see cref="BeatmapEntry"/> that contain all one beatmap per beatmapset.
     /// </summary>
     /// <returns></returns>
-    public List<BeatmapEntry> GetUniqueBeatmapEntries()
+    private List<BeatmapEntry> getUniqueBeatmapEntries()
     {
         List<BeatmapEntry> uniqueBeatmap = new List<BeatmapEntry>();
 
@@ -70,5 +74,14 @@ public class OsuStableDatabase
         }
 
         return uniqueBeatmap;
+    }
+
+    /// <summary>
+    /// Get the list of <see cref="BeatmapEntry"/> that contain all one beatmap per beatmapset.
+    /// </summary>
+    /// <returns></returns>
+    public List<BeatmapEntry> GetUniqueBeatmapEntries()
+    {
+        return uniqueBeatmapEntries;
     }
 }

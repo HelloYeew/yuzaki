@@ -20,6 +20,12 @@ namespace Yuzaki.Game
 
         private OsuStableDatabase osuStableDatabase;
 
+        private YuzakiPlaylistManager playlistManager;
+
+        private YuzakiQueueManager queueManager;
+
+        private YuzakiPlayerManager playerManager;
+
         private Stopwatch startupTimer;
 
         public YuzakiGame()
@@ -35,13 +41,21 @@ namespace Yuzaki.Game
         private void load()
         {
             dependencies.CacheAs(osuStableDatabase = new OsuStableDatabase());
-            dependencies.CacheAs(new YuzakiPlayerManager());
+            dependencies.CacheAs(playlistManager = new YuzakiPlaylistManager());
+            dependencies.CacheAs(queueManager = new YuzakiQueueManager());
+            dependencies.CacheAs(playerManager = new YuzakiPlayerManager());
+            LoadComponent(playlistManager);
+            LoadComponent(queueManager);
+            LoadComponent(playerManager);
             Add(mainScreenStack = new YuzakiScreenStack());
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            playlistManager.AllBeatmapPlaylist.SetList(osuStableDatabase.GetUniqueBeatmapEntries());
+            queueManager.SetQueue(osuStableDatabase.GetUniqueBeatmapEntries());
 
             AddRange(new Drawable[]
             {

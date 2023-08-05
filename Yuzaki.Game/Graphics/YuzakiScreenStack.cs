@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
 using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
+using Yuzaki.Game.Audio;
 using Yuzaki.Game.Graphics.Components;
 using Yuzaki.Game.Graphics.Screens;
 using Yuzaki.Game.OsuElement;
@@ -27,6 +28,9 @@ namespace Yuzaki.Game.Graphics
 
         [Resolved]
         private OsuStableDatabase database { get; set; }
+
+        [Resolved]
+        private YuzakiPlaylistManager playlistManager { get; set; }
 
         public YuzakiScreenStack()
         {
@@ -98,7 +102,7 @@ namespace Yuzaki.Game.Graphics
 
             Thread thread = new Thread(() =>
             {
-                foreach (BeatmapEntry entry in database.GetUniqueBeatmapEntries())
+                foreach (BeatmapEntry entry in playlistManager.AllBeatmapPlaylist.List)
                 {
                     PlaylistDetailComponent.AddSongEntry(entry);
                 }

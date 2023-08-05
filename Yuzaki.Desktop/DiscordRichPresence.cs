@@ -69,7 +69,7 @@ public partial class DiscordRichPresence : Component
             return;
 
         // Update text
-        if (playerManager.CurrentBeatmap == null)
+        if (playerManager.CurrentBeatmap.Value == null)
         {
             presence.State = "Idle";
             presence.Details = string.Empty;
