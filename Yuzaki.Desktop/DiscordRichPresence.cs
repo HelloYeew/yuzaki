@@ -77,8 +77,8 @@ public partial class DiscordRichPresence : Component
         }
         else
         {
-            presence.Details = "Listening to";
-            presence.State = $"{playerManager.CurrentBeatmap.Value.Artist} - {playerManager.CurrentBeatmap.Value.Title}";
+            presence.Details = playerManager.CurrentBeatmap.Value.Artist;
+            presence.State = playerManager.CurrentBeatmap.Value.Title;
             presence.Assets.LargeImageKey = $"https://assets.ppy.sh/beatmaps/{playerManager.CurrentBeatmap.Value.BeatmapSetId}/covers/list.jpg";
             presence.Assets.LargeImageText = $"{playerManager.CurrentBeatmap.Value.Artist} - {playerManager.CurrentBeatmap.Value.Title}";
         }
@@ -92,10 +92,14 @@ public partial class DiscordRichPresence : Component
         if (playerManager.CurrentBeatmap == null)
         {
             presence.Assets.SmallImageKey = "stop";
+            presence.Assets.SmallImageText = "Idle";
         }
         else
         {
             presence.Assets.SmallImageKey = playerManager.IsPlaying() ? "play" : "pause";
+            presence.Assets.SmallImageText = playerManager.IsPlaying() ? "Playing" : "Paused";
         }
+
+        client.SetPresence(presence);
     }
 }

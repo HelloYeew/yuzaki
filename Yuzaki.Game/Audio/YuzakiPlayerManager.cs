@@ -100,7 +100,7 @@ public class YuzakiPlayerManager
     /// <summary>
     /// Seek the audio to the specified time in seconds.
     /// </summary>
-    /// <param name="time"></param>
+    /// <param name="time">The time in seconds to seek to.</param>
     public void Seek(double time)
     {
         if (fileStream == 0) return;
