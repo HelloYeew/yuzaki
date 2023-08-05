@@ -227,11 +227,14 @@ namespace Yuzaki.Game.Graphics.Components
                                         }
                                     }
                                 },
+                                // Volume slider
+                                // TODO: Set alpha back when volume slider is implemented
                                 new Container
                                 {
                                     Anchor = Anchor.CentreLeft,
                                     Origin = Anchor.CentreLeft,
                                     Size = new Vector2(100),
+                                    Alpha = 0,
                                     Child = new FillFlowContainer()
                                     {
                                         Anchor = Anchor.CentreLeft,

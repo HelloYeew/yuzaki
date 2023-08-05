@@ -41,13 +41,20 @@ public partial class PlaylistInfo : CompositeDrawable
                             Spacing = new Vector2(8),
                             Children = new Drawable[]
                             {
-                                // playlist cover
-                                new Sprite()
+                                new Container()
                                 {
                                     Anchor = Anchor.CentreLeft,
                                     Origin = Anchor.CentreLeft,
                                     Size = new Vector2(220, 220),
-                                    Texture = textureStore.Get("default_playlist_cover.png")
+                                    Masking = true,
+                                    CornerRadius = 8,
+                                    Child = new Sprite()
+                                    {
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        RelativeSizeAxes = Axes.Both,
+                                        Texture = textureStore.Get("default_playlist_cover.png")
+                                    }
                                 },
                                 new FillFlowContainer()
                                 {
