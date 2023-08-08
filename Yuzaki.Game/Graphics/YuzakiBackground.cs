@@ -17,6 +17,8 @@ namespace Yuzaki.Game.Graphics
 {
     public partial class YuzakiBackground : CompositeDrawable
     {
+        public const float DEFAULT_BACKGROUND_ALPHA = 0.8f;
+
         [Resolved]
         private YuzakiPlayerManager playerManager { get; set; }
 
@@ -55,7 +57,7 @@ namespace Yuzaki.Game.Graphics
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Colour = YuzakiColour.BackgroundColour,
-                    Alpha = 0.8f,
+                    Alpha = DEFAULT_BACKGROUND_ALPHA,
                     Depth = 0
                 }
             };
@@ -166,6 +168,24 @@ namespace Yuzaki.Game.Graphics
                     }
                 }
             }, true);
+        }
+
+        public void HideColourBox()
+        {
+            backgroundColourBox.FadeOut(250, Easing.OutQuint);
+        }
+
+        public void ShowColourBox()
+        {
+            backgroundColourBox.FadeTo(DEFAULT_BACKGROUND_ALPHA, 250, Easing.OutQuint);
+        }
+
+        public void InvokeColourBoxFade()
+        {
+            if (backgroundColourBox.Alpha == 0)
+                ShowColourBox();
+            else
+                HideColourBox();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+using osuTK.Input;
 using Yuzaki.Game.Audio;
 using Yuzaki.Game.Graphics.Components;
 using Yuzaki.Game.Graphics.Screens;
@@ -20,6 +22,10 @@ namespace Yuzaki.Game.Graphics
 
         public CircleIconButton SettingsButton;
 
+        public YuzakiBackground Background;
+
+        private bool isHidden = false;
+
         [Resolved]
         private OsuStableDatabase database { get; set; }
 
@@ -30,7 +36,7 @@ namespace Yuzaki.Game.Graphics
         {
             InternalChildren = new Drawable[]
             {
-                new YuzakiBackground
+                Background = new YuzakiBackground
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -78,6 +84,41 @@ namespace Yuzaki.Game.Graphics
                 Origin = Anchor.Centre,
                 RelativeSizeAxes = Axes.Both
             });
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e)
+        {
+            if (e.ControlPressed && e.Key == Key.H)
+            {
+                if (isHidden)
+                {
+                    ShowOverlay();
+                }
+                else
+                {
+                    HideOverlay();
+                }
+            }
+
+            return base.OnKeyDown(e);
+        }
+
+        public void HideOverlay()
+        {
+            MainScreenStack.FadeOut(250, Easing.OutQuint);
+            ProfilePicture.FadeOut(250, Easing.OutQuint);
+            SettingsButton.FadeOut(250, Easing.OutQuint);
+            Background.InvokeColourBoxFade();
+            isHidden = true;
+        }
+
+        public void ShowOverlay()
+        {
+            MainScreenStack.FadeIn(250, Easing.OutQuint);
+            ProfilePicture.FadeIn(250, Easing.OutQuint);
+            SettingsButton.FadeIn(250, Easing.OutQuint);
+            Background.InvokeColourBoxFade();
+            isHidden = false;
         }
     }
 }
