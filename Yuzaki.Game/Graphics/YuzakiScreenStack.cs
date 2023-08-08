@@ -1,10 +1,8 @@
-﻿using System.Threading;
-using osu.Framework.Allocation;
+﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
-using Yuzaki.DatabaseReader.Stable.OsuElement.Components.Beatmaps;
 using Yuzaki.Game.Audio;
 using Yuzaki.Game.Graphics.Components;
 using Yuzaki.Game.Graphics.Screens;
@@ -21,10 +19,6 @@ namespace Yuzaki.Game.Graphics
         public ProfilePictureMenu ProfilePicture;
 
         public CircleIconButton SettingsButton;
-
-        public PlaylistDetail PlaylistDetailComponent;
-
-        public PlaylistMenu PlaylistMenuComponent;
 
         [Resolved]
         private OsuStableDatabase database { get; set; }
@@ -70,47 +64,20 @@ namespace Yuzaki.Game.Graphics
                         Left = YuzakiStylingEnum.SCREEN_PADDING
                     }
                 },
-                PlaylistMenuComponent = new PlaylistMenu()
+                MainScreenStack = new ScreenStack
                 {
-                    Anchor = Anchor.TopLeft,
-                    Origin = Anchor.TopLeft,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    Margin = new MarginPadding()
-                    {
-                        Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
-                        Left = YuzakiStylingEnum.SCREEN_PADDING
-                    }
-                }
-            };
-        }
-
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-
-            PlaylistDetailComponent = new PlaylistDetail()
-            {
-                Anchor = Anchor.TopRight,
-                Origin = Anchor.TopRight,
-                RelativeSizeAxes = Axes.Both,
-                Margin = new MarginPadding()
-                {
-                    Top = YuzakiStylingEnum.SCREEN_PADDING + ProfilePictureMenu.ICON_SIZE + YuzakiStylingEnum.SCREEN_PADDING,
-                    Right = YuzakiStylingEnum.SCREEN_PADDING
                 }
             };
 
-            Thread thread = new Thread(() =>
+            MainScreenStack.Push(new PlaylistScreen()
             {
-                foreach (BeatmapEntry entry in playlistManager.AllBeatmapPlaylist.List)
-                {
-                    PlaylistDetailComponent.AddSongEntry(entry);
-                }
-
-                Scheduler.Add(() => AddInternal(PlaylistDetailComponent));
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both
             });
-
-            thread.Start();
         }
     }
 }
