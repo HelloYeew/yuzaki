@@ -16,7 +16,7 @@ public partial class YuzakiPlayerManager : Component
 {
     public Bindable<BeatmapEntry> CurrentBeatmap = new Bindable<BeatmapEntry>();
     public BindableBool Playing = new BindableBool(false);
-
+    public BindableDouble CurrentTime = new BindableDouble(0);
     private int fileStream;
 
     [Resolved]
@@ -93,9 +93,9 @@ public partial class YuzakiPlayerManager : Component
     }
 
     /// <summary>
-    /// Return the current audio time in milliseconds
+    /// Return the current audio time in seconds
     /// </summary>
-    /// <returns>The current audio time in milliseconds</returns>
+    /// <returns>The current audio time in seconds</returns>
     public double GetCurrentTime()
     {
         if (fileStream == 0) return 0;
@@ -104,14 +104,22 @@ public partial class YuzakiPlayerManager : Component
     }
 
     /// <summary>
-    /// Return the total audio time in milliseconds
+    /// Return the total audio time in seconds
     /// </summary>
-    /// <returns>The total audio time in milliseconds</returns>
+    /// <returns>The total audio time in seconds</returns>
     public double GetTotalTime()
     {
         if (fileStream == 0) return 0;
 
         return Bass.ChannelBytes2Seconds(fileStream, Bass.ChannelGetLength(fileStream));
+    }
+
+    /// <summary>
+    /// Update the <see cref="CurrentTime"/> bindable to the current audio time.
+    /// </summary>
+    public void UpdateBindableTime()
+    {
+        CurrentTime.Value = GetCurrentTime();
     }
 
     /// <summary>

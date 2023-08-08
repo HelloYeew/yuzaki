@@ -31,4 +31,26 @@ public class Utility
             return null;
         }
     }
+
+    /// <summary>
+    /// Get a full path of the beatmap video. Will return null if the beatmap doesn't have a video.
+    /// </summary>
+    /// <param name="beatmapEntry">The <see cref="BeatmapEntry"/> to get the video from.</param>
+    /// <returns>The full path of the beatmap video. (Will return null if the beatmap doesn't have a video.)</returns>
+    public static string GetVideoPath(BeatmapEntry beatmapEntry)
+    {
+        try
+        {
+            string beatmapFilePath = Path.Combine(OsuStableLocation.DefaultSongsPath, beatmapEntry.FolderName, beatmapEntry.BeatmapFileName);
+            BeatmapFile beatmapFile = BeatmapFile.Read(beatmapFilePath);
+            List<EventBase> beatmapEvents = beatmapFile.Events;
+            VideoEvent videoEvent = beatmapEvents.Find(e => e is VideoEvent) as VideoEvent;
+            return videoEvent?.Path == null ? null : Path.Combine(OsuStableLocation.DefaultSongsPath, beatmapEntry.FolderName, videoEvent.Path);
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e, "Failed to get beatmap video path.");
+            return null;
+        }
+    }
 }

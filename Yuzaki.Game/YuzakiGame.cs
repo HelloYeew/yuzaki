@@ -79,6 +79,13 @@ namespace Yuzaki.Game
             Logger.Log($"⏱️ Startup completed in {startupTimer.ElapsedMilliseconds}ms.", LoggingTarget.Performance);
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            playerManager.UpdateBindableTime();
+        }
+
         private Task asyncLoadStream;
 
         /// <summary>

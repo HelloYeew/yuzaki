@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.Video;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using Yuzaki.Game.Audio;
@@ -29,6 +30,10 @@ namespace Yuzaki.Game.Graphics
 
         private Texture defaultBackgroundTexture;
 
+        private Video backgroundVideo;
+
+        private Box backgroundColourBox;
+
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -41,15 +46,17 @@ namespace Yuzaki.Game.Graphics
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     FillMode = FillMode.Fill,
-                    Texture = defaultBackgroundTexture
+                    Texture = defaultBackgroundTexture,
+                    Depth = 2
                 },
-                new Box
+                backgroundColourBox = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Colour = YuzakiColour.BackgroundColour,
-                    Alpha = 0.8f
+                    Alpha = 0.8f,
+                    Depth = 0
                 }
             };
 
@@ -84,6 +91,79 @@ namespace Yuzaki.Game.Graphics
                     Logger.Error(e, "Failed to load background.");
                     Logger.Log("Using default background instead.");
                     backgroundSprite.Texture = defaultBackgroundTexture;
+                }
+
+                try
+                {
+                    if (beatmap.NewValue == null)
+                    {
+                        Logger.Log("No beatmap selected or beatmap is null, using default background instead.");
+                        backgroundVideo?.Dispose();
+                        backgroundVideo = null;
+                        return;
+                    }
+
+                    string videoPath = Utility.GetVideoPath(beatmap.NewValue);
+
+                    if (videoPath == null)
+                    {
+                        Logger.Log($"Beatmap {beatmap.NewValue.Artist} - {beatmap.NewValue.Title} ({beatmap.NewValue.BeatmapId}) doesn't have a video, no video added");
+                        if (backgroundVideo != null)
+                            RemoveInternal(backgroundVideo, true);
+                    }
+                    else
+                    {
+                        if (backgroundVideo != null)
+                            RemoveInternal(backgroundVideo, true);
+                        backgroundVideo = new Video(videoPath)
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            FillMode = FillMode.Fill,
+                            Depth = 1
+                        };
+                        AddInternal(backgroundVideo);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, "Failed to load background video.");
+                    Logger.Log("Using default background instead.");
+
+                    if (backgroundVideo != null)
+                    {
+                        RemoveInternal(backgroundVideo, true);
+                        backgroundVideo = null;
+                    }
+                }
+            }, true);
+
+            playerManager.CurrentTime.BindValueChanged(time =>
+            {
+                if (backgroundVideo != null)
+                {
+                    backgroundVideo.PlaybackPosition = time.NewValue * 1000;
+                }
+            }, true);
+
+            playerManager.Playing.BindValueChanged(playing =>
+            {
+                if (playing.NewValue)
+                {
+                    if (backgroundVideo != null)
+                    {
+                        backgroundVideo.IsPlaying = true;
+                        Logger.Log("Playing video");
+                    }
+                }
+                else
+                {
+                    if (backgroundVideo != null)
+                    {
+                        backgroundVideo.IsPlaying = false;
+                        Logger.Log("Pausing video");
+                    }
                 }
             }, true);
         }
