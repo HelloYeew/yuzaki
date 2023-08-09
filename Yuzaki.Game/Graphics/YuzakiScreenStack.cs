@@ -26,6 +26,8 @@ namespace Yuzaki.Game.Graphics
 
         private bool isHidden = false;
 
+        private bool hideKeyDown = false;
+
         [Resolved]
         private OsuStableDatabase database { get; set; }
 
@@ -88,7 +90,7 @@ namespace Yuzaki.Game.Graphics
 
         protected override bool OnKeyDown(KeyDownEvent e)
         {
-            if (e.ControlPressed && e.Key == Key.H)
+            if (e.ControlPressed && e.Key == Key.H && !hideKeyDown)
             {
                 if (isHidden)
                 {
@@ -98,9 +100,21 @@ namespace Yuzaki.Game.Graphics
                 {
                     HideOverlay();
                 }
+
+                hideKeyDown = true;
             }
 
             return base.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyUpEvent e)
+        {
+            base.OnKeyUp(e);
+
+            if (e.ControlPressed && e.Key == Key.H)
+            {
+                hideKeyDown = false;
+            }
         }
 
         public void HideOverlay()
